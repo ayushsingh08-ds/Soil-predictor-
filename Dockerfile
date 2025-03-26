@@ -1,21 +1,24 @@
-# Use an official Python runtime as a base image
+# Use official Python runtime as a base image
 FROM python:3.9
 
-# Set the working directory inside the container
+# Set working directory inside the container
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y gcc libpq-dev
 
-# Copy the current directory contents into the container at /app
-COPY . .
+# Copy only requirements.txt first (for better caching)
+COPY requirements.txt .
 
-# Install Python dependencies
+# Upgrade pip & install dependencies
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port that Flask will run on
+# Copy the rest of the project files
+COPY . .
+
+# Expose the port Flask runs on
 EXPOSE 5000
 
-# Define the command to run the application
+# Run the Flask application
 CMD ["python", "app.py"]
