@@ -1,25 +1,24 @@
-# Use an official Python runtime as a base image
+# Use official Python runtime as a base image
 FROM python:3.9
 
-# Set the working directory inside the container
+# Set working directory inside the container
 WORKDIR /app
 
-# Install system dependencies (prevents some package errors)
-RUN apt-get update && apt-get install -y gcc libpq-dev python3-dev libffi-dev libssl-dev
+# Install system dependencies
+RUN apt-get update && apt-get install -y gcc libpq-dev
 
-# Copy requirements.txt separately (improves caching)
+# Copy only requirements.txt first (for better caching)
 COPY requirements.txt .
 
-# Upgrade pip & install dependencies (debugging enabled)
+# Upgrade pip & install dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir --verbose -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application files
+# Copy the rest of the project files
 COPY . .
 
 # Expose the port Flask runs on
 EXPOSE 5000
 
 # Run the Flask application
-CMD ["python", "app.py"]
-RUN pip install flask pandas numpy
+CMD ["gunicorn", "app.py"]
