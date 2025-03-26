@@ -12,7 +12,8 @@ COPY requirements.txt .
 
 # Upgrade pip & install dependencies
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Ensure requirements.txt exists and install dependencies
+RUN if [ -f requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; else echo "requirements.txt not found"; exit 1; fi
 
 # Copy the rest of the project files
 COPY . .
