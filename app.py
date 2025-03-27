@@ -16,7 +16,7 @@ feature_names = ["Soil_pH", "Moisture_Content(%)", "Soil_Temperature(°C)", "Nit
 
 # Variable to store the latest data
 latest_data = {}
-
+    
 @app.route('/process-soil-data', methods=['POST'])
 def process_soil_data():
     global latest_data

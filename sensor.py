@@ -7,7 +7,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # API URL
-API_URL = "https://your-app-name.up.railway.app/process-soil-data"
+API_URL = "https://soil-predictor-production.up.railway.app//process-soil-data"
 
 # Authentication credentials
 AUTH = {"id": "sensor123", "password": "password123"}
