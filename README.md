@@ -18,6 +18,8 @@ This project is a **Flask-based machine learning API** that processes **soil sen
 ## 🌍 **Live API URL**  
 The Flask API is **deployed on Railway.app**:  
 🔗 **Base URL:** [`https://soil-predictor-production.up.railway.app`](https://soil-predictor-production.up.railway.app)  
+**id** : sensor123
+**password**: password123
 
 ---
 
