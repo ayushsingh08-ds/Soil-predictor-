@@ -20,24 +20,32 @@ latest_data = {}
 @app.route('/process-soil-data', methods=['POST'])
 def process_soil_data():
     global latest_data
-    data = request.json['data']
-    
-    # Convert the input data to a DataFrame with the appropriate column names
-    features = pd.DataFrame([data], columns=feature_names)
-    
-    # Make predictions using the models
+    data = request.json
+
+    # Authentication Check
+    AUTH_CREDENTIALS = {"id": "sensor123", "password": "password123"}
+    if "auth" not in data or data["auth"] != AUTH_CREDENTIALS:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    # Extract only the sensor data
+    sensor_data = data["data"]
+
+    # Convert to DataFrame
+    features = pd.DataFrame([sensor_data], columns=feature_names)
+
+    # Make predictions
     erosion_prediction = erosion_model.predict(features)[0]
     irrigation_prediction = irrigation_model.predict(features)[0]
     soil_condition_prediction = soil_condition_model.predict(features)[0]
-    
-    # Update the latest data
+
+    # Store latest data
     latest_data = {
-        'soil_values': data,
+        'soil_values': sensor_data,
         'Erosion_Level': int(erosion_prediction),
         'Irrigation_Need': int(irrigation_prediction),
         'Soil_Condition': int(soil_condition_prediction)
     }
-    
+
     return jsonify({'status': 'success', 'data': latest_data})
 
 @app.route('/latest-soil-data', methods=['GET'])
